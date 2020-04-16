@@ -1,0 +1,62 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 1em;
+    height: 100%;
+}
+
+.container> :not(:last-child) {
+    margin-bottom: 1em;
+}
+
+.utilityBelt {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: center;
+    height: 40px;
+}
+
+.utilityBelt> :not(:last-child) {
+    margin-right: 1em;
+}
+
+.input {
+    width: 35%;
+    margin-right: 1em;
+    min-width: 200px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    width: 90%;
+    grid-auto-rows: 40px;
+    grid-gap: 10px;
+    justify-items: center;
+    height: calc(100% - 40px - 1em - 1em);
+    overflow: auto;
+}
+
+@media only screen and (max-width: 600px) {
+    .utilityBelt {
+        flex-direction: column;
+        justify-content: initial;
+        align-items: center;
+        height: calc(120px + 3em);
+    }
+    .utilityBelt> :not(:last-child) {
+        margin-right: 0em;
+        margin-bottom: 1em;
+    }
+    .button {
+        width: 90%;
+    }
+    .input {
+        width: 90%;
+    }
+    .grid {
+        height: calc(100% - 120px - 5em);
+    }
+}
