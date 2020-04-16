@@ -57,6 +57,6 @@
         width: 90%;
     }
     .grid {
-        height: calc(100% - 120px - 5em);
+        height: calc(100% - 120px - 6em);
     }
 }
