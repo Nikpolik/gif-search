@@ -26,12 +26,16 @@ const App: FC = () => {
   } = useAppState();
 
   let content: any = <img className={styles.noResult} src={noResult} />;
-  let addonAfter = null
   if (loading) {
     content = <Spinner className={styles.spinner} />
   } else if (!gifs) {
     content = null;
   } else if (gifs.length > 0) {
+    const addonAfter = (
+      <div className={styles.loadMore}>
+        <Button onClick={loadMore} color="#F8B195">Load More</Button>
+      </div>
+    )
     content = (
       <Grid
         columnGap={COLUMN_GAP}
@@ -52,11 +56,6 @@ const App: FC = () => {
           ))
         }
       </Grid>
-    )
-    addonAfter = (
-      <div className={styles.loadMore}>
-        <Button onClick={loadMore} color="#F8B195">Load More</Button>
-      </div>
     )
   }
 
