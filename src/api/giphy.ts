@@ -43,14 +43,19 @@ export type SearchResponse = {
     meta: Meta
 }
 
-export const search = async (input: string): Promise<Images[]> => {
-    const response = await fetch(`${BASE_URL}/search?api_key=${API_KEY}&q=${input}`)
-    const { data } = await response.json() as SearchResponse;
-    return data.map((result) => result.images);
-}
-
-export const trending = async (): Promise<Images[]> => {
-    const response = await fetch(`${BASE_URL}/trending?api_key=${API_KEY}`);
-    const { data } = await response.json() as SearchResponse;
-    return data.map((result) => result.images);
+export const getGifs = async (type: 'search' | 'trending', value?: string, pagination?: { limit?: number, offset?: number }) => {
+    let request_url = `${BASE_URL}/${type}?api_key=${API_KEY}&`;
+    if (value && type == 'search') {
+        request_url += `q=${value}&`
+    }
+    if (pagination) {
+        if (pagination.limit) {
+            request_url += `limit=${pagination.limit}&`;
+        }
+        if (pagination.offset) {
+            request_url += `offset=${pagination.offset}`;
+        }
+    }
+    const response = await fetch(request_url);
+    return await response.json() as SearchResponse;
 }

@@ -1,0 +1,10 @@
+.grid {
+    display: grid;
+    justify-content: center;
+    overflow-y: auto;
+}
+
+.lastRow {
+    grid-column: 1 / -1;
+    grid-row-end: span 3;
+}

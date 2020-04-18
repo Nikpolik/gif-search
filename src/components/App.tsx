@@ -1,58 +1,93 @@
-import React, { FC, useState, SyntheticEvent, useCallback } from 'react';
+import React, { FC, useState, SyntheticEvent } from 'react';
 import { usePersistentState } from '../hooks/useStorage';
-import { search, Images, trending } from '../api/giphy';
+import { Gif, getGifs } from '../api/giphy';
 import { Button } from './button/Button';
 import { Input } from './input/Input';
 import styles from './app.module.css';
-import { Card } from './card/Card';
+import { Card } from './grid/Card';
+import { Grid } from './grid/Grid';
 import { Spinner } from './spinner/Spinner';
+import noResult from '../assets/noResult.gif';
+import { useAppState } from './appState';
+
+const ROW_SPAN = 25;
+const ROW_GAP = 15;
+const COLUMN_GAP = 15;
+const ITEM_WIDTH = 200;
 
 const App: FC = () => {
-  const [images, setImages] = usePersistentState<Images[]>('urls', []);
-  const [value, setValue] = useState('');
-  const [loading, setLoading] = useState(false);
+  const {
+    loadInitial,
+    loading,
+    loadMore,
+    gifs,
+    value,
+    setValue,
+    clear,
+    remove
+  } = useAppState();
 
-  const searchGif = useCallback(async () => {
-    setLoading(true);
-    const newImages = await search(value);
-    setImages(newImages);
-    setLoading(false);
-  }, [value]);
-  const getTrending = useCallback(async () => {
-    setLoading(true);
-    const newImages = await trending();
-    setImages(newImages);
-    setLoading(false);
-  }, []);
-  const clear = () => {
-    setImages([]);
-  }
-  const remove = () => {
-
-  }
-
-
-  let content: any = <div>Nothing to see here :D</div>
+  let content: any = <img className={styles.noResult} src={noResult} />;
+  let addonAfter = null
   if (loading) {
     content = <Spinner />
   }
-  if (images.length > 0) {
-    content = images.map((image) => (
-      <Card {...image} />
-    ))
+  if (!gifs) {
+    content = null;
+  } else if (gifs.length > 0) {
+    content = gifs.map((gif) => (
+      <Card
+        totalMargin={ROW_GAP}
+        rowSpan={ROW_SPAN}
+        key={gif.id}
+        remove={remove}
+        {...gif}
+      />
+    ));
+    addonAfter = (
+      <div className={styles.loadMore}>
+        <Button onClick={loadMore} color="#F8B195">Load More</Button>
+      </div>
+    )
   }
 
   return (
     <div className={styles.container}>
       <div className={styles.utilityBelt}>
-        <Input className={styles.input} onChange={(event: SyntheticEvent<HTMLInputElement>) => setValue(event.currentTarget.value)} />
-        <Button className={styles.button} color="#ed3330" onClick={searchGif}>search</Button>
-        <Button className={styles.button} color="#FF00AA" onClick={getTrending}>trending</Button>
+        <Input
+          className={styles.input}
+          onChange={(event: SyntheticEvent<HTMLInputElement>) => setValue(event.currentTarget.value)}
+          onKeyDown={(event) => {
+            if (event.keyCode === 13) {
+              loadInitial('search', value);
+            }
+          }}
+        />
+        <Button
+          className={styles.button}
+          color="#6C5B7B"
+          onClick={() => loadInitial('search', value)}
+        >
+          search
+        </Button>
+        <Button
+          className={styles.button}
+          color="#F67280"
+          onClick={() => loadInitial('trending')}
+        >
+          trending
+             </Button>
         <Button className={styles.button} onClick={clear}>clear</Button>
       </div>
-      <div className={styles.grid}>
+      <Grid
+        columnGap={COLUMN_GAP}
+        itemWidth={ITEM_WIDTH}
+        rowSpan={ROW_SPAN}
+        className={styles.grid}
+        addonAfter={addonAfter}
+      >
         {content}
-      </div>
+      </Grid>
     </div>
   )
 }
