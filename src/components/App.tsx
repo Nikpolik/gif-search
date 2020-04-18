@@ -28,19 +28,31 @@ const App: FC = () => {
   let content: any = <img className={styles.noResult} src={noResult} />;
   let addonAfter = null
   if (loading) {
-    content = <Spinner />
+    content = <Spinner className={styles.spinner} />
   } else if (!gifs) {
     content = null;
   } else if (gifs.length > 0) {
-    content = gifs.map((gif) => (
-      <Card
-        totalMargin={ROW_GAP}
+    content = (
+      <Grid
+        columnGap={COLUMN_GAP}
+        itemWidth={ITEM_WIDTH}
         rowSpan={ROW_SPAN}
-        key={gif.id}
-        remove={remove}
-        {...gif}
-      />
-    ));
+        className={styles.grid}
+        addonAfter={addonAfter}
+      >
+        {
+          gifs.map((gif) => (
+            <Card
+              totalMargin={ROW_GAP}
+              rowSpan={ROW_SPAN}
+              key={gif.id}
+              remove={remove}
+              {...gif}
+            />
+          ))
+        }
+      </Grid>
+    )
     addonAfter = (
       <div className={styles.loadMore}>
         <Button onClick={loadMore} color="#F8B195">Load More</Button>
@@ -76,15 +88,7 @@ const App: FC = () => {
              </Button>
         <Button className={styles.button} onClick={clear}>clear</Button>
       </div>
-      <Grid
-        columnGap={COLUMN_GAP}
-        itemWidth={ITEM_WIDTH}
-        rowSpan={ROW_SPAN}
-        className={styles.grid}
-        addonAfter={addonAfter}
-      >
-        {content}
-      </Grid>
+      {content}
     </div>
   )
 }
