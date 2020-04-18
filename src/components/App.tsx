@@ -22,15 +22,14 @@ const App: FC = () => {
     value,
     setValue,
     clear,
-    remove
+    remove,
   } = useAppState();
 
   let content: any = <img className={styles.noResult} src={noResult} />;
   let addonAfter = null
   if (loading) {
     content = <Spinner />
-  }
-  if (!gifs) {
+  } else if (!gifs) {
     content = null;
   } else if (gifs.length > 0) {
     content = gifs.map((gif) => (
@@ -63,7 +62,7 @@ const App: FC = () => {
         />
         <Button
           className={styles.button}
-          color="#6C5B7B"
+          color="#F8B195"
           onClick={() => loadInitial('search', value)}
         >
           search

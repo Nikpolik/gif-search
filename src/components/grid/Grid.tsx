@@ -1,4 +1,4 @@
-import React, { FC, CSSProperties } from 'react';
+import React, { FC, CSSProperties, RefObject } from 'react';
 import styles from './grid.module.css';
 
 export type GridProps = {
@@ -6,17 +6,18 @@ export type GridProps = {
     itemWidth: number;
     columnGap: number;
     className?: string;
-    addonAfter?: JSX.Element | null
+    addonAfter?: JSX.Element | null;
+    ref?: RefObject<HTMLDivElement>
 }
 
-export const Grid: FC<GridProps> = ({ children, rowSpan, columnGap, itemWidth, className, addonAfter }) => {
+export const Grid: FC<GridProps> = ({ children, rowSpan, columnGap, itemWidth, className, addonAfter, ref }) => {
     const gridStyle: CSSProperties = {
         columnGap,
         gridTemplateColumns: `repeat(auto-fit, ${itemWidth}px)`,
         gridAutoRows: rowSpan
     }
     return (
-        <div className={styles.grid + ' ' + className} style={gridStyle}>
+        <div ref={ref} className={styles.grid + ' ' + className} style={gridStyle}>
             {children}
             {
                 addonAfter ?

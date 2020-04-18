@@ -15,6 +15,7 @@ const copyToClipboard = async (text: string) => {
         await navigator.clipboard.writeText(text);
     } catch (e) {
         console.log(e);
+        alert('Clipboard access not available please update your browser to use this feature')
     }
 }
 
@@ -44,10 +45,12 @@ export const Card: FC<CardProps> = ({ images: { fixed_width, fixed_width_still, 
                         <Button
                             className={styles.button}
                             onClick={() => copyToClipboard(url)}
+                            color="#F8B195"
                         >
                             Copy
                         </Button>
                         <Button
+                            color="#F8B195"
                             onClick={() => remove(id)}
                         >
                             Remove

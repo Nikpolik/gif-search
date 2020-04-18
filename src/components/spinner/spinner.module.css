@@ -1,7 +1,7 @@
 .spinner {
-    animation: loading 3s linear infinite;
-    width: 150px;
-    height: 150px;
+    animation: loading 4s linear infinite;
+    width: 100px;
+    height: 100px;
 }
 
 @keyframes loading {

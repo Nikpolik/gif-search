@@ -1,14 +1,14 @@
 import { usePersistentState } from "../hooks/useStorage";
 import { Gif, getGifs } from "../api/giphy";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 const ITEM_LIMIT = 25;
 
 export const useAppState = () => {
     const [gifs, setGifs] = usePersistentState<Gif[] | null>('urls', null);
-    const [value, setValue] = useState('');
+    const [value, setValue] = usePersistentState('value', '');
     const [loading, setLoading] = useState(false);
-    const [currentOffset, setCurrentOffset] = useState(0);
+    const [currentOffset, setCurrentOffset] = usePersistentState('offset', 0);
     const [currentType, setCurrentType] = useState<'trending' | 'search'>('search');
 
     const loadMore = async () => {
@@ -26,12 +26,14 @@ export const useAppState = () => {
         if (pagination.total_count > pagination.offset) {
             setCurrentOffset(pagination.offset + ITEM_LIMIT);
         }
+        window.scrollTo(0, 0);
         setGifs(data);
         setLoading(false);
     }
 
     const clear = () => {
         setGifs(null);
+        setValue('');
     }
 
     const remove = (id: string) => {
@@ -52,6 +54,6 @@ export const useAppState = () => {
         loadInitial,
         loadMore,
         clear,
-        remove
+        remove,
     }
 }
