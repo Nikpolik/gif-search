@@ -63,6 +63,7 @@ const App: FC = () => {
     <div className={styles.container}>
       <div className={styles.utilityBelt}>
         <Input
+          value={value}
           className={styles.input}
           onChange={(event: SyntheticEvent<HTMLInputElement>) => setValue(event.currentTarget.value)}
           onKeyDown={(event) => {
@@ -81,7 +82,10 @@ const App: FC = () => {
         <Button
           className={styles.button}
           color="#F67280"
-          onClick={() => loadInitial('trending')}
+          onClick={() => {
+            setValue('trending');
+            loadInitial('trending')
+          }}
         >
           trending
              </Button>
