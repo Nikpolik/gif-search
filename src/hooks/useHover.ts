@@ -6,7 +6,9 @@ export const useHover = <T extends HTMLElement>(): [RefObject<T>, boolean] => {
     useEffect(() => {
         const element = ref.current;
         const onMouseOver = () => {
-            setHover(true);
+            setTimeout(() => {
+                setHover(true);
+            }, 5);
         }
         const onMouseExit = () => {
             setHover(false);

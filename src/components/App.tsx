@@ -1,6 +1,4 @@
-import React, { FC, useState, SyntheticEvent } from 'react';
-import { usePersistentState } from '../hooks/useStorage';
-import { Gif, getGifs } from '../api/giphy';
+import React, { FC, SyntheticEvent } from 'react';
 import { Button } from './button/Button';
 import { Input } from './input/Input';
 import styles from './app.module.css';
@@ -11,8 +9,8 @@ import noResult from '../assets/noResult.gif';
 import { useAppState } from './appState';
 
 const ROW_SPAN = 25;
-const ROW_GAP = 15;
-const COLUMN_GAP = 15;
+const ROW_GAP = 5;
+const COLUMN_GAP = 5;
 const ITEM_WIDTH = 200;
 
 const App: FC = () => {
